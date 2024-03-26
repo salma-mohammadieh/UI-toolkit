@@ -1,18 +1,24 @@
-import React from 'react';
-import '@material/web/icon/icon';
-import '@material/web/iconbutton/icon-button';
-import '@material/web/tabs/tabs';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { createComponent } from '@lit/react';
+import '@material/web/icon/icon';
+import '@material/web/iconbutton/icon-button';
 import { MdPrimaryTab } from '@material/web/tabs/primary-tab';
 import { MdSecondaryTab } from '@material/web/tabs/secondary-tab';
+import { MdTabs } from '@material/web/tabs/tabs';
 
 const sharedKeys = {
   react: React,
   events: {
-    onClick: 'click',
+    onChange: 'change',
   },
 };
+
+export const TabsComponent = createComponent({
+  ...sharedKeys,
+  tagName: 'md-tabs',
+  elementClass: MdTabs,
+});
 
 export const PrimaryTab = createComponent({
   ...sharedKeys,
@@ -32,43 +38,51 @@ const tabVariant = {
 };
 
 const Tabs = ({
-  selected,
-  iconOnly,
-  hasIcon,
-  active,
-  isTab,
-  inlineIcon,
+  activeTabIndex,
+  autoActivate,
   onChange,
   variant,
-  tabsContent = [],
+  tabsContent,
 }) => {
+  const [activeTab, setActiveTab] = useState(activeTabIndex);
+
   const TabComponent = tabVariant[variant];
 
+  const handleTabClick = (index) => {
+    setActiveTab(index);
+    onChange(index);
+  };
+
   return (
-    <md-tabs activeTabIndex={0} onChange={onChange} tabs={['1', '2', '3']}>
+    <TabsComponent
+      activeTabIndex={1}
+      autoActivate={autoActivate}
+      onChange={onChange}
+    >
       {tabsContent.map((tab, index) => (
         <TabComponent
           key={index}
-          active={tab.active} // Pass the active prop from the tab object
-          isTab={isTab}
-          iconOnly={iconOnly}
-          hasIcon={hasIcon}
+          active={activeTab === index}
+          onClick={() => handleTabClick(index)}
+          iconOnly={tab.iconOnly}
+          hasIcon={tab.hasIcon}
         >
-          {tab.icon && <md-icon>{tab.icon}</md-icon>}{' '}
-          {/* Render icon if provided */}
-          {tab.text}
+          {tab.hasIcon && tab.icon}
+          {!tab.iconOnly && tab.text}
         </TabComponent>
       ))}
-    </md-tabs>
+    </TabsComponent>
   );
 };
 
 Tabs.defaultProps = {
+  activeTabIndex: 0,
+  autoActivate: false,
   selected: false,
   iconOnly: false,
   hasIcon: false,
-  active: false,
-  isTab: false,
+  active: true,
+  icon: <></>,
   inlineIcon: false,
   onChange: () => {},
   tabsContent: [],
@@ -76,20 +90,41 @@ Tabs.defaultProps = {
 };
 
 Tabs.propTypes = {
-  selected: PropTypes.bool,
-  iconOnly: PropTypes.bool,
-  hasIcon: PropTypes.bool,
-  active: PropTypes.bool,
-  isTab: PropTypes.bool,
-  inlineIcon: PropTypes.bool,
+  /**
+   * Index of the initially active tab.
+   */
+  activeTabIndex: PropTypes.number,
+
+  /**
+   * Whether or not to automatically select a tab when it is focused.
+   */
+  autoActivate: PropTypes.bool,
+
+  /**
+   * Fired when the selected tab changes. The target's selected or selectedItem and previousSelected or previousSelectedItem provide information about the selection change. The change event is fired when a user interaction like a space/enter key or click cause a selection change. The tab selection based on these actions can be cancelled by calling preventDefault on the triggering keydown or click event.
+   */
   onChange: PropTypes.func,
+
+  /**
+   * An array of objects representing the tabs to be rendered.
+   * Each object should have properties:
+   *   - active (boolean, optional): Indicates if the tab is initially active.
+   *   - icon (element, optional): The icon element to be displayed alongside the tab text.
+   *   - iconOnly (boolean, optional): Indicates if only the icon should be displayed (no text).
+   *   - text (string, required): The text to be displayed on the tab.
+   */
   tabsContent: PropTypes.arrayOf(
     PropTypes.shape({
       active: PropTypes.bool,
-      icon: PropTypes.string,
+      icon: PropTypes.element,
+      iconOnly: PropTypes.bool,
       text: PropTypes.string.isRequired,
     })
   ),
+
+  /**
+   * Variant of the tabs component. Can be either 'primary' or 'secondary'.
+   */
   variant: PropTypes.oneOf(['primary', 'secondary']),
 };
 
