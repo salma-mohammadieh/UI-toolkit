@@ -13,20 +13,22 @@ const SwitchComponent = createComponent({
   },
 });
 
-const Switch = ({ ...props }) =>
+const Switch = ({ className, ...props }) =>
   props.label ? (
     <>
       <label htmlFor={props.label}> {props.label}</label>
       <SwitchComponent
+        className={className}
         id={props.label}
-        {...(showOnlySelectedIcon
-          ? { 'show-only-selected-icon': showOnlySelectedIcon }
+        {...(props.showOnlySelectedIcon
+          ? { 'show-only-selected-icon': props.showOnlySelectedIcon }
           : {})}
         {...props}
       />
     </>
   ) : (
     <SwitchComponent
+      className={className}
       {...(props.showOnlySelectedIcon
         ? { 'show-only-selected-icon': props.showOnlySelectedIcon }
         : {})}
@@ -35,7 +37,7 @@ const Switch = ({ ...props }) =>
   );
 
 Switch.defaultProps = {
-  ariaLabel: '',
+  'aria-label': '',
   className: '',
   disabled: false,
   icons: false,
@@ -53,7 +55,7 @@ Switch.propTypes = {
   /**
    * Switch aria label
    */
-  ariaLabel: PropTypes.string,
+  'aria-label': PropTypes.string,
   /**
    * Styles class name
    */

@@ -26,7 +26,7 @@ const OutlinedInput = createComponent({
   },
 });
 
-const Input = forwardRef(({ leadingIcon, trailingIcon, ...props }, ref) => {
+const Input = forwardRef(({ leadingIcon, trailingIcon, className, ...props }, ref) => {
   const Component = props.isFilled ? FilledInput : OutlinedInput;
   return (
     <Component {...props}>
@@ -39,7 +39,7 @@ const Input = forwardRef(({ leadingIcon, trailingIcon, ...props }, ref) => {
 Input.displayName = 'Input';
 
 Input.defaultProps = {
-  ariaLabel: '',
+  'aria-label': '',
   autocomplete: '',
   className: '',
   cols: 20,
@@ -76,7 +76,7 @@ Input.propTypes = {
   /**
    * Input aria-label
    */
-  ariaLabel: PropTypes.string,
+  'aria-label': PropTypes.string,
   /**
    * Input autocomplete
    */

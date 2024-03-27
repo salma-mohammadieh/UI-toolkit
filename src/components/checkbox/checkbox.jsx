@@ -9,27 +9,27 @@ const Checkbox = createComponent({
   react: React,
 });
 
-const CheckBox = ({ ...props }) => {
-  console.log(props)
-  return props.label ? (
+const CheckBox = ({ className, label, ...props }) =>
+  label ? (
     <>
-      <label htmlFor={props.label}>{props.label}</label>
+      <label htmlFor={label}>{label}</label>
       <Checkbox
+        className={className}
         touch-target="wrapper"
-        id={props.label}
+        id={label}
         {...props}
       ></Checkbox>
     </>
   ) : (
     <Checkbox
+      className={className}
       touch-target="wrapper"
       {...props}
     ></Checkbox>
   );
-};
 
 CheckBox.defaultProps = {
-  ariaLabel: '',
+  'aria-label': '',
   checked: false,
   className: '',
   disabled: false,
@@ -43,7 +43,7 @@ CheckBox.propTypes = {
   /**
    * checkbox aria-label
    */
-  ariaLabel: PropTypes.string,
+  'aria-label': PropTypes.string,
   /**
    * If true the checkbox is selected
    */
