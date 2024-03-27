@@ -13,22 +13,12 @@ const SwitchComponent = createComponent({
   },
 });
 
-const Switch = ({
-  ariaLabel,
-  className,
-  label,
-  onChange,
-  onInput,
-  showOnlySelectedIcon,
-  ...props
-}) =>
-  label ? (
+const Switch = ({ ...props }) =>
+  props.label ? (
     <>
-      <label htmlFor={label}> {label}</label>
+      <label htmlFor={props.label}> {props.label}</label>
       <SwitchComponent
-        aria-label={ariaLabel}
-        className={className}
-        id={label}
+        id={props.label}
         {...(showOnlySelectedIcon
           ? { 'show-only-selected-icon': showOnlySelectedIcon }
           : {})}
@@ -37,10 +27,8 @@ const Switch = ({
     </>
   ) : (
     <SwitchComponent
-      aria-label={ariaLabel}
-      className={className}
-      {...(showOnlySelectedIcon
-        ? { 'show-only-selected-icon': showOnlySelectedIcon }
+      {...(props.showOnlySelectedIcon
+        ? { 'show-only-selected-icon': props.showOnlySelectedIcon }
         : {})}
       {...props}
     />

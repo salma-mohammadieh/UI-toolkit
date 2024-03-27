@@ -9,26 +9,24 @@ const Checkbox = createComponent({
   react: React,
 });
 
-const CheckBox = ({ ariaLabel, className, label, ...props }) =>
-  label ? (
+const CheckBox = ({ ...props }) => {
+  console.log(props)
+  return props.label ? (
     <>
-      <label htmlFor={label}>{label}</label>
+      <label htmlFor={props.label}>{props.label}</label>
       <Checkbox
-        aria-label={ariaLabel}
-        className={className}
         touch-target="wrapper"
-        id={label}
+        id={props.label}
         {...props}
       ></Checkbox>
     </>
   ) : (
     <Checkbox
-      aria-label={ariaLabel}
-      className={className}
       touch-target="wrapper"
       {...props}
     ></Checkbox>
   );
+};
 
 CheckBox.defaultProps = {
   ariaLabel: '',

@@ -26,48 +26,15 @@ const OutlinedInput = createComponent({
   },
 });
 
-const Input = forwardRef(
-  (
-    {
-      ariaLabel,
-      className,
-      error,
-      errorText,
-      hasLeadingIcon,
-      hasTrailingIcon,
-      isFilled,
-      leadingIcon,
-      prefixText,
-      readOnly,
-      suffixText,
-      supportingText,
-      trailingIcon,
-      validationPattern,
-      ...props
-    },
-    ref
-  ) => {
-    const Component = isFilled ? FilledInput : OutlinedInput;
-    return (
-      <Component
-        aria-label={ariaLabel}
-        error-text={errorText}
-        pattern={validationPattern}
-        prefix-text={prefixText}
-        ref={ref}
-        suffix-text={suffixText}
-        supporting-text={supportingText}
-        error={error}
-        {...(hasLeadingIcon ? { 'has-leading-icon': hasLeadingIcon } : {})}
-        {...(hasTrailingIcon ? { 'has-trailing-icon': hasTrailingIcon } : {})}
-        {...props}
-      >
-        {leadingIcon && <md-icon slot="leading-icon">{leadingIcon}</md-icon>}
-        {trailingIcon && <md-icon slot="trailing-icon">{trailingIcon}</md-icon>}
-      </Component>
-    );
-  }
-);
+const Input = forwardRef(({ leadingIcon, trailingIcon, ...props }, ref) => {
+  const Component = props.isFilled ? FilledInput : OutlinedInput;
+  return (
+    <Component {...props}>
+      {leadingIcon && <md-icon slot="leading-icon">{leadingIcon}</md-icon>}
+      {trailingIcon && <md-icon slot="trailing-icon">{trailingIcon}</md-icon>}
+    </Component>
+  );
+});
 
 Input.displayName = 'Input';
 

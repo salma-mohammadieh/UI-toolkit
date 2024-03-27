@@ -36,6 +36,8 @@ Indeterminate.args = {
 
 export const WithLabel = Template.bind({});
 WithLabel.args = {
+  ariaLabel: 'checkbox',
+  className: 'className',
   label: 'checkbox',
 };
 

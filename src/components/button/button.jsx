@@ -60,37 +60,11 @@ const buttonVariants = {
   tonal: TonalButton,
 };
 
-const Button = ({
-  children,
-  hasIcon,
-  href,
-  icon,
-  isDisabled,
-  name,
-  onClick,
-  onReset,
-  onSubmit,
-  target,
-  trailingIcon,
-  type,
-  variant,
-}) => {
+const Button = ({ children, icon, variant, ...props }) => {
   const Component = buttonVariants[variant];
-
   return (
-    <Component
-      disabled={isDisabled}
-      hasIcon={hasIcon}
-      onClick={onClick}
-      onReset={onReset}
-      onSubmit={onSubmit}
-      href={href}
-      target={target}
-      type={type}
-      name={name}
-      trailingIcon={trailingIcon}
-    >
-      {icon}
+    <Component {...props}>
+      {props.hasIcon && icon}
       {children}
     </Component>
   );
@@ -98,7 +72,7 @@ const Button = ({
 
 Button.defaultProps = {
   children: null,
-  isDisabled: false,
+  disabled: false,
   href: '',
   target: '',
   trailingIcon: false,
@@ -119,9 +93,9 @@ Button.propTypes = {
   /** The URL the button should navigate to when clicked */
   href: PropTypes.string,
   /** The icon element to be displayed alongside the button text */
-  icon: any,
+  icon: PropTypes.element,
   /** Whether the button is disabled */
-  isDisabled: PropTypes.bool,
+  disabled: PropTypes.bool,
   /** The name attribute of the button */
   name: PropTypes.string,
   /** Function called when the button is clicked */
